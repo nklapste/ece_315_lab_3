@@ -10,6 +10,8 @@
  *      https://www.sparkfun.com/products/10168
  *      Arduino sketch code
  *      http://playground.arduino.cc/Code/PCD8544
+ *  Modified on: Mar 13, 2019
+ *		Author: Nathan Klapstien
  */
 
 #include "LCD.h"
@@ -25,15 +27,13 @@
 
 LCD::LCD() {
 	// TODO Auto-generated constructor stub
-
 }
 
 LCD::~LCD() {
 	// TODO Auto-generated destructor stub
 }
 
-
-// CUSTOM
+/* custom sprite definition representing a bar graph block */
 const BYTE block[7] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 /* Initialize LCD hardware and DQSPI module*/
@@ -44,7 +44,6 @@ const BYTE block[7] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
  * Outputs: none
  */
 void LCD::Init(void) {
-
 		init_spi();
 		init_lcd();
 }
