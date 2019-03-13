@@ -18,8 +18,11 @@ extern "C" {
 	void Task2Main( void * pd);
 }
 
-
-/* turns out the system works in millivolts and not volts */
+/** 
+ * The system works in millivolts and not volts.
+ *
+ * Thus, these values have been adjusted to accommodate this.
+ */
 #define USER_MAIN_VOLTS 3000
 #define TASK1_VOLTS		2000
 #define TASK2_VOLTS		1000
