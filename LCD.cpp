@@ -32,6 +32,10 @@ LCD::~LCD() {
 	// TODO Auto-generated destructor stub
 }
 
+
+// CUSTOM
+const BYTE block[7] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
 /* Initialize LCD hardware and DQSPI module*/
 /* Name: Init
  * Description: Initializes both the SPI module on the MOD54415
@@ -141,6 +145,17 @@ void LCD::DrawChar(const BYTE * ch, point loc){
  */
 void LCD::DrawBarGraph(BYTE line, BYTE length){
 
+	/**
+	 * Position of the dollar $ sprite/
+	 *
+	 * Initially set to the top left corner of the LCD screen.
+	 */
+	point cursor = {0, 0};
+	cursor.row = line;
+	for (int i = 0; i < length; i++) {
+		cursor.col = i*7;
+		DrawChar(block, cursor);
+	}
 }
 
 /* * Name: Test LCD
@@ -255,13 +270,19 @@ void LCD::init_lcd(void) {
 	LCD_RESET = 1;
 	// Insert your ex 2 code modifications here
 	// H = 1
-	send_cmd(0x21);
-	send_cmd(0xB0);
-	send_cmd(0x04);
-	send_cmd(0x14);
+	send_cmd(CMD_FUNCTION_SET | OPT_EXT_INSTR); // set H = 1
+	//	send_cmd(0xB0);
+	//	send_cmd(CMD_SET_VOP | OPT_CONTRAST_LIGHT) // original low contrast mode
+	send_cmd(CMD_SET_VOP | OPT_CONTRAST_DARK);
+	//	send_cmd(0x04)
+	send_cmd(CMD_TEMP_CNTRL | OPT_VLCD_COEFF_0);
+	//	send_cmd(0x14)
+	send_cmd(CMD_BIAS_SYSTEM | OPT_N_3);
 	// H = 0
-	send_cmd(0x20);
-	send_cmd(0x0C);
+	//	send_cmd(0x20)
+	send_cmd(CMD_FUNCTION_SET | OPT_BASIC_INSTR); // set H = 0
+	//	send_cmd(0x0C)
+	send_cmd(CMD_DISPLAY_CONTROL | OPT_NORMAL);
 	// End ex 2 modifications
 	move(char_index[LINE1_ORIGIN]);
 }

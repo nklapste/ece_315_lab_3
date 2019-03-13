@@ -1,0 +1,19 @@
+All 3 task voltages are found 3V 2V 1V 0V (no task) repeats in this fashion
+
+3V 5ms time
+
+goes to
+
+2V 15ms time
+
+goes to 
+
+1V 8ms time
+
+goes to
+
+0V 22ms time
+
+entire loop is 50ms long
+
+
