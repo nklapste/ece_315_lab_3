@@ -73,7 +73,6 @@ void LCD::Invert(void) {
 
 		inverted = false;
 	} else {
-
 		send_cmd(0x20);
 		send_cmd(0x0D);
 
@@ -105,7 +104,6 @@ void LCD::DrawBitmap(const BYTE * bitmap) {
  * Outputs: none
  */
 void LCD::DrawString(char * str) {
-
 	BYTE index = 0;
 
 	while ( (*(str)) != '\0'){
@@ -114,6 +112,7 @@ void LCD::DrawString(char * str) {
 		str++;
 	}
 }
+
 /* Name: DrawChar
  * Description: Draws a 7 pixel (width) by 8 pixel (height) sprite at the current location.
  * Use the font tables in bitmaps.h to select a sprite.
@@ -125,6 +124,7 @@ void LCD::DrawChar(const BYTE * ch) {
 	send_cmd(0x20);
 	send_cmd(0x0C);
 }
+
 /* Name:DrawChar
  * Description: Draws a 7 pixel(width) by 8 pixel( height) sprite at the provided location
  * Inputs:  const BYTE * ch -  an array of raw data that represents the character.
@@ -136,28 +136,24 @@ void LCD::DrawChar(const BYTE * ch, point loc){
 	DrawChar(ch);
 }
 
-/* * Name: DrawBarGraph
+/* Name: DrawBarGraph
  * Description: Displays a 7 X 8 box sprite to on the designated line
  * Inputs: BYTE line (valid from 0 - 5) BYTE length (valid from 0-11)
  * Outputs: none
  * Sprite is in bitmaps.h at index 96 ASCII array.
  */
 void LCD::DrawBarGraph(BYTE line, BYTE length){
-
-	/**
-	 * Position of the dollar $ sprite/
-	 *
-	 * Initially set to the top left corner of the LCD screen.
-	 */
 	point cursor = {0, 0};
+
 	cursor.row = line;
+
 	for (int i = 0; i < length; i++) {
 		cursor.col = i*7;
 		DrawChar(block, cursor);
 	}
 }
 
-/* * Name: Test LCD
+/* Name: Test LCD
  * Description: Sends a fixed bitmap to the screen 84 X 48 pixels = 504 Bytes
  * Inputs: none
  * Outputs: none
@@ -166,16 +162,18 @@ void LCD::TestLCD(void){
 	Home();
 	send_data((BYTE *) xkcdSandwich, SCREEN_SIZE);
 }
-	/* Name: Home
-	 * Description: Move the internal counter of the LCD to the upper
-	 * left hand point of the LCD
-	 * Inputs: none
-	 * Outputs: none
-	 */
+
+/* Name: Home
+ * Description: Move the internal counter of the LCD to the upper
+ * left hand point of the LCD
+ * Inputs: none
+ * Outputs: none
+ */
 void LCD::Home(void) {
 	point origin = char_index[LINE1_ORIGIN];
 	move(origin);
 }
+
 /* Name: Move
  * Description: Moves te internal counter of the LCD to the lcoation specified
  * To write characters linmit the values of point to the members of the char_index array
@@ -187,6 +185,7 @@ void LCD::Home(void) {
 void LCD::Move(point loc) {
 	move(loc);
 }
+
 /* Name: init_spi
  * Description: Initializes the SPI module on the 54415 to match the requirements of the
  * NOKIA 51150 with PCD8544 LCD controller
@@ -223,6 +222,7 @@ void LCD::init_spi(void){
 						//parameter is specified as 0x0 or not included.
 				);
 }
+
 /* Name: send_data
  * Description: Sends data to the LCD, with size being the total number of bytes of data.
  * This will display it at the current location
@@ -237,6 +237,7 @@ void LCD::send_data(const BYTE * data, WORD size) {
 	            NULL, size, &DSPI_SEM); // send data via SPI bus
 	display_error("LCD::send_data \n", OSSemPend( &DSPI_SEM, WAIT_FOREVER ));
 }
+
 /* Name: send_cmd
  * Description: Sends a command to the LCD. All possible commands are in
  * lcd.h
@@ -244,8 +245,6 @@ void LCD::send_data(const BYTE * data, WORD size) {
  * Outputs: none
  */
 void LCD::send_cmd(BYTE command){
-
-
 	LCD_C_D_LINE = 0;  // 0 = command
 
 	// send command via the SPI bus
@@ -255,7 +254,6 @@ void LCD::send_cmd(BYTE command){
 	display_error("LCD::send_command \n", OSSemPend( &DSPI_SEM, WAIT_FOREVER ));
 }
 
-
 /* Name: init_lcd
  * Description: See cite above for sparkfun and arduino info. This method
  * sends initialization commands to the PCD 8544 LCD controller
@@ -263,7 +261,6 @@ void LCD::send_cmd(BYTE command){
  * Outputs: none
  */
 void LCD::init_lcd(void) {
-
 	LCD_RESET = 0;
 	OSTimeDly(1); // minimal possible delay
 	LCD_RESET = 1;
@@ -285,6 +282,7 @@ void LCD::init_lcd(void) {
 	// End ex 2 modifications
 	move(char_index[LINE1_ORIGIN]);
 }
+
 /* Name: move
  * Description: Set the internal counters of the LCDs to the location provided
  * non-ASCII character data:
