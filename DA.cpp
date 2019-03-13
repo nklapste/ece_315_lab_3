@@ -3,6 +3,8 @@
  *
  *  Created on: Feb 9, 2017
  *      Author: nem1
+ *  Modified on: Mar 13, 2019
+ *		Author: Nathan Klapstien
  */
 
 #include "DA.h"
@@ -12,7 +14,6 @@
 
 DA::DA() {
 	// TODO Auto-generated constructor stub
-
 }
 
 DA::~DA() {
