@@ -9,7 +9,6 @@
 
 #include "DA.h"
 #include <sim.h>
-#include <stdio.h>
 #include <iosys.h>
 
 DA::DA() {
