@@ -3,16 +3,16 @@
  *
  *  Created on: Feb 9, 2017
  *      Author: nem1
+ *  Modified on: Mar 13, 2019
+ *		Author: Nathan Klapstien
  */
 
 #include "AD.h"
 #include <basictypes.h>
 #include <sim.h>
-#include <stdio.h> // todo: debug
 
 AD::AD() {
 	// TODO Auto-generated constructor stub
-
 }
 
 AD::~AD() {
@@ -52,7 +52,6 @@ void AD::Init(void) {
  * Starts the AD conversion. Only a single sample is onverted.
  */
 void AD::StartAD(void) {
-	 // Registers to modify for ex2
 	  sim2.adc.sr = 0x0000;
 	  sim2.adc.cr1 = 0x2000;
 }
@@ -65,18 +64,26 @@ void AD::StopAD(void) {
       sim2.adc.cr1 = 0x0000;
 }
 
-// stolen
+/**
+ * Check if a bit at a specified position is set to 1.
+ *
+ * @param b bytes to extract the bit to check
+ * @param pos position of the bit to check within the bytes
+ *
+ * @returns {@code true} if the bit is 1, otherwise return {@code false}
+ */
 bool isBitSet(int b, int pos) {
    return (b & (1 << pos)) != 0;
 }
 
+/* positions of certian flags / bits within the ADC_SR (status register) */
 #define EOSI0_POS 11
 #define EOSI1_POS 12
 
 /**
  * This method checks the status of the AD conversion.
  *
- * @returns Should return a boolean: true if the AD conversion is done and false if not done
+ * @returns {@code true} if the AD conversion is done, otherwise return {@code false}
  */
 bool AD::ADDone(void) {
 	// Register to check for ex2
@@ -92,12 +99,14 @@ bool AD::ADDone(void) {
 }
 
 /**
- * Reads the result of the AD conversion once
- * the status register indicates that the conversion is done is ADDone
+ * Reads the result of the AD conversion on the specified channel once and return it
+ *
+ * @param ch channel of the ADC result register to extract a AD conversion value from
+ *
+ * @returns {@code WORD} representing the signed integer value stored within the ADC's
+ * 		result register
  */
 WORD AD::GetADResult(int ch) {
-	// Register to modify for ex2
-	// sim2.adc.rslt[ch]
 	int result;
 
 	// if the sext
@@ -106,7 +115,7 @@ WORD AD::GetADResult(int ch) {
 	} else {
 		result = 1;
 	}
-	int mask = 0x7FF8; // 0b0111111111111000;
+	int mask = 0x7FF8; // represents a mask of: 0b0111111111111000;
 	result = result * ((sim2.adc.rslt[ch] & mask) >> 3);
 	return result;
 }
